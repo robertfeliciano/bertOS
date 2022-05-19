@@ -34,7 +34,7 @@ static inline void delay(int32_t count){
 }
 
 enum{
-    //the offsets for reach register.
+    //the offsets for each register.
     GPIO_BASE = 0x200000,
  
     //controls actuation of pull up/down to ALL GPIO pins.
@@ -44,8 +44,9 @@ enum{
     GPPUDCLK0 = (GPIO_BASE + 0x98),
  
     //the base address for UART.
-    UART0_BASE = (GPIO_BASE + 0x1000), // for raspi4 0xFE201000, raspi2 & 3 0x3F201000, and 0x20201000 for raspi1
- 
+    //for raspi4 0xFE201000, raspi2 & 3 0x3F201000, and 0x20201000 for raspi1
+    UART0_BASE = (GPIO_BASE + 0x1000), 
+
     //the offsets for reach register for the UART.
     UART0_DR     = (UART0_BASE + 0x00),
     UART0_RSRECR = (UART0_BASE + 0x04),
@@ -79,24 +80,23 @@ volatile unsigned int __attribute__((aligned(16))) mbox[9] = {
 };
 
 //i've already learned so much just writing up to this section! for example:
-//I learned that I hate UART.
+//I learned that I hate UART. Then I came to love UART
 void uart_init(int raspi){
 
     mmio_init(raspi);
 
-    //disable UART0
+    //disable all aspects of UART hardware. CR is the UART's control register
     mmio_write(UART0_CR, 0x00000000);
-    //setup the GPIO pin 14 && 15
 
-    //disable pull up/down for all GPIO pins & delay for 150 cycles
+    //amrks that pins should be disabled
     mmio_write(GPPUD, 0x00000000);
     delay(150);
 
-    //disable pull up/down for pin 14, 15 & delay for 150 cycles
+    //specifies to disable pins 14 and 15
     mmio_write(GPPUDCLK0, (1 << 14) | (1 << 15));
     delay(150);
 
-    //write 0 to GPPUDCLK0 to make it take effect (activate it)
+    //write 0 to GPPUDCLK0 to make the above changes take effect
     mmio_write(GPPUDCLK0, 0x00000000);
 
     //clear pending interrupts
@@ -112,5 +112,63 @@ void uart_init(int raspi){
         mmio_write(MBOX_WRITE, r);
         while((mmio_read(MBOX_STATUS) & 0x40000000) || mmio_read(MBOX_READ) != r);
     }
-    
+
+    //set baud rate of connection
+    mmio_write(UART0_IBRD, 1);
+    mmio_write(UART0_FBRD, 40);
+
+    //writes bits 4, 5, and 6 to line control register.
+    //setting bit 4 means UART will hold data in 8 item deep FIFO rather than 1 item deep register
+    //setting bits 5 and 6 means that data sent or received will have 8-bit long words
+    mmio_write(UART0_LCRH, (1 << 4) | (1 << 5) | (1 << 6));
+
+	//disable all interrupts from the UART
+	mmio_write(UART0_IMSC, (1 << 1) | (1 << 4) | (1 << 5) | (1 << 6) |
+	                       (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10));
+ 
+	//writing bit 0 enables the UART hardware
+    //writing bit 8 enables the ability to receive data
+    //writing bit 9 enables the ability to transmit data
+	mmio_write(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
+
 }
+
+void uart_putc(unsigned char c){
+    //wait for UART to become ready to transmit data
+    //FR is the flag register and tells us whether the read FIFO has any data for us to read
+    //DR is the data register and is where data is read from and also written to
+    while(mmio_read(UART0_FR) & (1 << 5));
+    return mmio_write(UART0_DR, c);
+}
+
+unsigned char uart_getc(){
+    //the flag register can also tell us whether the write FIFO can accept any data
+    while(mmio_read(UART0_FR) & (1 << 4));
+    return mmio_read(UART0_DR);
+}
+
+void uart_puts(const char* str){
+    for (size_t i = 0; str[i] != '\0'; i++){
+        uart_putc((unsigned char) str[i]);
+    }
+}
+
+#ifdef __cplusplus
+extern "C"
+#endif
+
+#ifdef AARCH64
+//args for AArch64
+void kernel_main(uint64_t dtb_ptr32, uint64_t x1, uint64_t x2, uint64_t x3)
+#else
+//args for AArch32
+void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
+#endif
+{
+    //right now i know this is only going to run on my raspberry pi 4. I could add
+    //some asm blocks to determine what board the code is being run on but... not today :)
+    uart_init(4);
+    uart_puts("Hello, kernel!\r\n");
+    while(1) uart_putc(uart_getc());
+}
+
