@@ -1,5 +1,8 @@
 # Charlemagne OS
 
+## Table of Contents
+1. [Background](#Background)
+
 ### Background
 In my sophomore year of college I took three courses that would change the way I viewed computer science forever: Computer Architecture and Organization, Systems Programming, and Operating Systems.
 
@@ -12,3 +15,4 @@ I had wanted to build an OS since I was in high school, making command-line RPGs
 I'd always wanted to name my OS "Charlemagne". I just think the name the sounds cool. Coincidentally my OS professor was French. Funny how things work out sometimes.
 
 ### What is the purpose of Charlemagne?
+Fun. I want to apply what I learned and truly challenge myself in a way I don't think I ever have before.
