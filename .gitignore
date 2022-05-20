@@ -1,5 +1,6 @@
 # My stuff
 .vscode/
+compile/
 
 # Prerequisites
 *.d
