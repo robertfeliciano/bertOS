@@ -20,7 +20,7 @@ SECTIONS
     {
         *(.rodata)
     }
-    . = ALIGN(4096)
+    . = ALIGN(4096);
     __rodata_end = .;
 
     /* initialize read-write data section */

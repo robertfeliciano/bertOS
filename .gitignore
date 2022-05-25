@@ -1,6 +1,7 @@
 # My stuff
 .vscode/
 compile/
+kernel8.img
 
 # Prerequisites
 *.d
