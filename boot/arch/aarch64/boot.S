@@ -15,15 +15,6 @@
 //x3 -> 0
 //x4 -> 32 bit kernel entry point (_start location)
 _start:
-    mrs     x5, mpidr_el1
-    and     x5, x5, #3
-    cbz     x5, 2f
-    // if processor ID is not zero, that means we aren't on the main core: we need to wait in a "loop"
-1:  wfe     
-    //this is kind of like a sleep() call when using semaphores. the core will go to sleep,
-    // and wait for an event to occur. once the event occurs, it wakes back up.
-    b       1b
-2:  //if we get here the we are on the main core and can get to work
     //set stack before code section
     ldr     x5, =_start
     mov     sp, x5
