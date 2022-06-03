@@ -2,9 +2,10 @@
 
 .section ".text.boot"
 
+//boot code is loaded at 0x80000 in 64-bit mode rather than 0x8000 for 32-bit mode
 .globl _start
 
-    //boot code is loaded at 0x80000 in 64-bit mode rather than 0x8000 for 32-bit mode
+    
     .org 0x80000
 
 //entry point for the kernel
