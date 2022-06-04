@@ -157,16 +157,20 @@ void uart_puts(const char* str){
 extern "C"
 #endif
 
-#ifdef AARCH64
-//args for AArch64
 void kernel_main(uint64_t dtb_ptr32, uint64_t x1, uint64_t x2, uint64_t x3)
-#else
-//args for AArch32
-void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
-#endif
 {
-    //right now i know this is only going to run on my raspberry pi 4. I could add
-    //some asm blocks to determine what board the code is being run on but... not today :)
+    uint32_t reg;
+    int raspi;
+    asm volatile ("mrs %x0, midr_el1" : "=r" (reg));
+
+    switch((reg >> 4) & 0xFFF){
+        case 0xB76: raspi = 1; break;
+        case 0xC07: raspi = 2; break;
+        case 0xD03: raspi = 3; break;
+        case 0xD08: raspi = 4; break;
+        default: raspi = 1; break;
+    }
+
     uart_init(4);
     uart_puts("Hello, kernel!\r\n");
     while(1) uart_putc(uart_getc());
