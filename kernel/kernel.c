@@ -171,7 +171,7 @@ void kernel_main(uint64_t dtb_ptr32, uint64_t x1, uint64_t x2, uint64_t x3)
         default: raspi = 1; break;
     }
 
-    uart_init(4);
+    uart_init(raspi);
     uart_puts("Hello, kernel!\r\n");
     while(1) uart_putc(uart_getc());
 }
