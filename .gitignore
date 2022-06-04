@@ -2,6 +2,7 @@
 .vscode/
 compile/
 kernel8.img
+*.swp
 
 # Prerequisites
 *.d
