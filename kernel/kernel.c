@@ -39,7 +39,7 @@ enum{
  
     //controls actuation of pull up/down to ALL GPIO pins.
     GPPUD = (GPIO_BASE + 0x94),
- 
+  
     //controls actuation of pull up/down for specific GPIO pin.
     GPPUDCLK0 = (GPIO_BASE + 0x98),
  
@@ -138,7 +138,7 @@ void uart_putc(unsigned char c){
     //FR is the flag register and tells us whether the read FIFO has any data for us to read
     //DR is the data register and is where data is read from and also written to
     while(mmio_read(UART0_FR) & (1 << 5));
-    return mmio_write(UART0_DR, c);
+    mmio_write(UART0_DR, c);
 }
 
 unsigned char uart_getc(){
@@ -173,6 +173,8 @@ void kernel_main(uint64_t dtb_ptr32, uint64_t x1, uint64_t x2, uint64_t x3)
 
     uart_init(raspi);
     uart_puts("Hello, kernel!\r\n");
-    while(1) uart_putc(uart_getc());
+    while(1) {
+        uart_putc(uart_getc());
+    }
 }
 
