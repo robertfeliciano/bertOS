@@ -1,6 +1,6 @@
 # My stuff
 .vscode/
-compile/
+bin/
 kernel8.img
 *.swp
 
