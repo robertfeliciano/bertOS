@@ -1,4 +1,5 @@
 #include <gpio.h>
+#include <stddef.h>
 
 static uint32_t MMIO_BASE;
 
