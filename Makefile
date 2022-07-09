@@ -1,40 +1,40 @@
-GCC := aarch64-elf-gcc
-ASM := aarch64-elf-as
-CFLAGS := -ffreestanding -O2 -Wall -Wextra -Iinclude -c
-QFLAGS := qemu-system-aarch64 -M raspi3 -serial stdio -kernel
-INCLDUE := -Iinclude/kernel
+GCC = aarch64-linux-gnu-gcc
+ARM = aarch64-linux-gnu
+OPTS = -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only $(INC)
+ASMOPT = -Iinclude
+QFLAGS := qemu-system-aarch64 -m 128 -M raspi3 -cpu cortex-a53 -kernel kernel8.img -serial null -serial vc
 
-SRC_DIRS := ./src/kernel
-BIN_DIRS := ./bin
+INC = -Iinclude -Iinclude/pi
 
-BOOTLDR := boot.o
-KERN := kernel.o
+BUILD = build
+SRC = kernel
+DEP = dependencies
 
-all: boot src
-	$(GCC) -T linker.ld -o $(BIN_DIRS)/bertos.elf -ffreestanding -O2 -nostdlib \
-	$(BIN_DIRS)/$(BOOTLDR) $(BIN_DIRS)/$(KERN) -lgcc
+$(BUILD)/%_c.o: $(SRC)/%.c
+	@mkdir -p $(@D)
+	$(GCC) $(OPTS) $(INC) -MMD -c $< -o $@
 
-	aarch64-elf-objcopy $(BIN_DIRS)/bertos.elf -O binary kernel8.img
+$(BUILD)/%_S.o: $(SRC)/%.S
+	$(GCC) $(ASMOPT) -MMD -c $< -o $@
 
-.PHONY: boot
-boot:
-	@echo "Building bootloader..."
-	$(ASM) $(SRC_DIRS)/boot.S -o $(BIN_DIRS)/boot.o
+C_FILES = $(wildcard $(SRC)/*.c)
+ASM_FILES = $(wildcard $(SRC)/*.S)
+OBJ_FILES = $(C_FILES:$(SRC)/%.c=$(BUILD)/%_c.o)
+OBJ_FILES += $(ASM_FILES:$(SRC)/%.S=$(BUILD)/%_S.o)
 
-.PHONY: src
-src/kernel/%.o: src/kernel/%.c
-	@echo "Building source files"
-	$(GCC) $(CFLAGS) $(INCLDUE) -c $< -o $@
+DEP_FILES = $(DEP)/$(OBJ_FILES:%.o=%.d)
+-include $(DEP_FILES)
 
+.PHONY: kernel
+kernel: $(SRC)/linker.ld $(OBJ_FILES)
+	$(ARM)-ld -T $(SRC)/linker.ld -o $(BUILD)/kernel8.elf $(OBJ_FILES)
+	$(ARM)-objcopy $(BUILD)/kernel8.elf -O binary kernel8.img
 
-qemu: all
-	$(QFLAGS) kernel8.img
+all: kernel8.img
 
+#switch "view" in qemu to "serial1" instead of whatever the default is (for me it is bcm2835-fb)
+qemu: kernel
+	$(QFLAGS)
 
-.PHONY: clean
 clean:
-	@echo "Cleaning..."
-	rm -f *.img
-	rm $(BIN_DIRS)/*
-	rm -f src/kernel/*.o
-	
+	rm -rf $(BUILD) *.img *.d

@@ -1,8 +1,9 @@
 # My stuff
 .vscode/
-bin/
+build/
 kernel8.img
 *.swp
+*.img
 
 # Prerequisites
 *.d
