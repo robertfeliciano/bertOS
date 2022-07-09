@@ -1,2 +1,11 @@
 qemu-system-arm
 gcc-aarch64-linux-gnu
+qemu-kvm 
+qemu 
+virt-manager 
+virt-viewer 
+libvirt-clients 
+libvirt-daemon-system 
+bridge-utils 
+virtinst 
+libvirt-daemon
