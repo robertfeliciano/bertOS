@@ -2,7 +2,7 @@ GCC = aarch64-linux-gnu-gcc
 ARM = aarch64-linux-gnu
 OPTS = -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only $(INC)
 ASMOPT = -Iinclude
-QFLAGS := qemu-system-aarch64 -m 128 -M raspi3 -cpu cortex-a53 -kernel kernel8.img -serial null -serial vc
+QFLAGS := qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
 
 INC = -Iinclude -Iinclude/pi
 
@@ -32,9 +32,12 @@ kernel: $(SRC)/linker.ld $(OBJ_FILES)
 
 all: kernel8.img
 
-#switch "view" in qemu to "serial1" instead of whatever the default is (for me it is bcm2835-fb)
 qemu: kernel
+	@echo "\n\n"
 	$(QFLAGS)
 
 clean:
 	rm -rf $(BUILD) *.img *.d
+
+clear: clean
+	@clear
