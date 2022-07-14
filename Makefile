@@ -2,7 +2,7 @@ GCC = aarch64-linux-gnu-gcc
 ARM = aarch64-linux-gnu
 OPTS = -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only $(INC)
 ASMOPT = -Iinclude
-QFLAGS := qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
+QFLAGS = qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
 
 INC = -Iinclude -Iinclude/pi
 
@@ -30,7 +30,7 @@ kernel: $(SRC)/linker.ld $(OBJ_FILES)
 	$(ARM)-ld -T $(SRC)/linker.ld -o $(BUILD)/kernel8.elf $(OBJ_FILES)
 	$(ARM)-objcopy $(BUILD)/kernel8.elf -O binary kernel8.img
 
-all: kernel8.img
+all: kernel
 
 qemu: kernel
 	@echo "\n\n"
