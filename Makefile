@@ -33,7 +33,7 @@ kernel: $(SRC)/linker.ld $(OBJ_FILES)
 all: kernel
 
 qemu: kernel
-	@echo "\n\n"
+	@printf "\n\n"
 	$(QFLAGS)
 
 clean:
