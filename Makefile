@@ -4,7 +4,7 @@ OPTS = -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only $(INC)
 ASMOPT = -Iinclude
 QFLAGS = qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
 
-INC = -Iinclude -Iinclude/pi
+INC = -Iinclude
 
 BUILD = build
 SRC = kernel
