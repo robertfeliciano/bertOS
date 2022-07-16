@@ -44,6 +44,7 @@
 /**
  * sctlr_el2 control reg on page 2665 - dont think i need this
  * spsr_el1 reg on page 377 - dont think i need this either
+ * 
  * spsr_el2 reg on page 383 - replace spsr_el3 with this in boot.S
  * elr_el2 reg on page 349 - replace elr_el3 with this in boot.S
  */
