@@ -2,7 +2,7 @@
 #define _SYSREGS_H
 
 // ***************************************
-// SCTLR_EL1, System Control Register (EL1)
+// SCTLR_EL1, System Control Register (EL1), pg 2654 of AArch64-Reference-Manual
 // ***************************************
 
 #define SCTLR_RESERVED                  (3 << 28) | (3 << 22) | (1 << 20) | (1 << 11)
@@ -16,14 +16,14 @@
 #define SCTLR_VALUE_MMU_DISABLED	    (SCTLR_RESERVED | SCTLR_EE_LITTLE_ENDIAN | SCTLR_I_CACHE_DISABLED | SCTLR_D_CACHE_DISABLED | SCTLR_MMU_DISABLED)
 
 // ***************************************
-// HCR_EL2, Hypervisor Configuration Register (EL2)
+// HCR_EL2, Hypervisor Configuration Register (EL2), pg 2487 of AArch64-Reference-Manual
 // ***************************************
 
 #define HCR_RW	    			        (1 << 31)
 #define HCR_VALUE			            HCR_RW
 
 // ***************************************
-// SCR_EL3, Secure Configuration Register (EL3)
+// SCR_EL3, Secure Configuration Register (EL3), pg 2648 of AArch64-Reference-Manual
 // ***************************************
 
 #define SCR_RESERVED	    		    (3 << 4)
@@ -32,7 +32,7 @@
 #define SCR_VALUE	    	    	    (SCR_RESERVED | SCR_RW | SCR_NS)
 
 // ***************************************
-// SPSR_EL3, Saved Program Status Register (EL3)
+// SPSR_EL3, Saved Program Status Register (EL3), pg 389 of AArch64-Reference-Manual
 // ***************************************
 
 #define SPSR_MASK_ALL 			        (7 << 6)
@@ -40,3 +40,10 @@
 #define SPSR_VALUE			            (SPSR_MASK_ALL | SPSR_EL1h)
 
 #endif
+
+/**
+ * sctlr_el2 control reg on page 2665 - dont think i need this
+ * spsr_el1 reg on page 377 - dont think i need this either
+ * spsr_el2 reg on page 383 - replace spsr_el3 with this in boot.S
+ * elr_el2 reg on page 349 - replace elr_el3 with this in boot.S
+ */
