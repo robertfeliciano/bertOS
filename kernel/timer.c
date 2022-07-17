@@ -2,7 +2,7 @@
 #include <printf.h>
 #include <pi/timer.h>
 
-const unsigned int interval = 200000;
+const unsigned int interval = 2;
 unsigned int currVal = 0;
 
 void timer_init(void){
@@ -24,6 +24,7 @@ void arm_timer_init(void){
 }
 
 void handle_arm_timer_irq(void){
+    //currVal += interval;
     put32(ARM_TIMER_CLR, 1);
     printf("Timer interrupt received!\n\r");
 }

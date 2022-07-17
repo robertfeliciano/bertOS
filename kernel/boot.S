@@ -15,12 +15,14 @@ loop:
     b		loop
 
 main:
+    //needed to determine if we are on physical pi or qemu
     mrs 	x0, CurrentEL
     cmp		x0, #CurrentEL_EL3
     beq		el3_entry
     b 		el2_entry
 
 el3_entry:
+    //this is what is run on a physical pi3
     ldr		x0, =SCTLR_VALUE_MMU_DISABLED
     msr		sctlr_el2, x0
 
@@ -39,6 +41,7 @@ el3_entry:
     eret
 
 el2_entry:
+    //qemu boots pi3 at el2 so this is needed for qemu
     ldr 	x0, =SCTLR_VALUE_MMU_DISABLED
     msr 	sctlr_el1, x0
     
@@ -51,6 +54,7 @@ el2_entry:
     eret
 
 el1_entry:
+    //we want our OS to run at el1
     adr		x0, bss_begin
     adr		x1, bss_end
     sub		x1, x1, x0
