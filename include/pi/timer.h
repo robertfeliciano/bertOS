@@ -16,14 +16,8 @@
 #define TIMER_CS_M2	    (1 << 2)
 #define TIMER_CS_M3	    (1 << 3)
 
-#define ARM_TIMER_BASE  (PBASE + 0xB000)
-#define ARM_TIMER_LOAD  (ARM_TIMER_BASE + 0x400)
-#define ARM_TIMER_VALUE (ARM_TIMER_BASE + 0x404)
-#define ARM_TIMER_CTRL  (ARM_TIMER_BASE + 0x408)
-#define ARM_TIMER_CLR   (ARM_TIMER_BASE + 0x40c)
-
-#define CTRL_23BIT      (1 << 1)      // 23-bit counter
-#define CTRL_INT_ENABLE (1 << 5)      // Timer interrupt enabled
-#define CTRL_ENABLE     (1 << 7)      // Timer enabled
+//local timer
+#define TIMER_CTRL      (PERIPHERAL_BASE+0x34)
+#define TIMER_FLAG      (PERIPHERAL_BASE+0x38)
 
 #endif /*_P_TIMER_H */

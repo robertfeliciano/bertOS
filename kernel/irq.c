@@ -27,7 +27,7 @@ const char* entry_error_messages[] = {
 };
 
 void enable_interrupt_controller(){
-    put32(ENABLE_IRQS_1, SYSTEM_TIMER_IRQ_1);
+    put32(CORE0_INT_CTR, SYSTEM_TIMER_IRQ_1);
 }
 
 void show_invalid_entry_message(int type, unsigned long esr, unsigned long address){
@@ -35,12 +35,12 @@ void show_invalid_entry_message(int type, unsigned long esr, unsigned long addre
 }
 
 void handle_irq(){
-    unsigned int irq = get32(IRQ_BASIC_PENDING);
+    unsigned int irq = get32(CORE0_INT_SOURCE);
     switch (irq){
-        case (ARM_TIMER_IRQ):
-            handle_arm_timer_irq();
+        case (CNTPNSIRQ_INT):
+            handle_timer_irq();
             break;
         default:
-            printf("Unknown pending irq: %x\r\n", irq);
+            printf("Unknown pending irq: 0x%x\r\n", irq);
     }
 }

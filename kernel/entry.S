@@ -128,9 +128,9 @@ error_invalid_el0_32:
 
 el1_irq:
     kernel_entry 
-    bl	handle_irq
+    bl      handle_irq
     kernel_exit 
 
 .global err_hang
 err_loop:
-    b   err_loop
+    b       err_loop
