@@ -12,7 +12,7 @@ DEP = dependencies
 
 $(BUILD)/%_c.o: $(SRC)/%.c
 	@mkdir -p $(@D)
-	$(GCC) $(OPTS) $(INC) -MMD -c $< -o $@
+	$(GCC) $(OPTS) -MMD -c $< -o $@
 
 $(BUILD)/%_S.o: $(SRC)/%.S
 	$(GCC) $(ASMOPT) -MMD -c $< -o $@
@@ -29,8 +29,6 @@ DEP_FILES = $(DEP)/$(OBJ_FILES:%.o=%.d)
 kernel: $(SRC)/linker.ld $(OBJ_FILES)
 	$(ARM)-ld -T $(SRC)/linker.ld -o $(BUILD)/kernel8.elf $(OBJ_FILES)
 	$(ARM)-objcopy $(BUILD)/kernel8.elf -O binary kernel8.img
-
-all: kernel
 
 qemu: kernel
 	@printf "\n\n"
