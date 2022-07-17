@@ -9,7 +9,7 @@ void kernel_main(){
     //int el = get_el();
     //printf("Exception level: %d\r\n", el);
     irq_vector_init();
-    timer_init();
+    arm_timer_init();
     enable_interrupt_controller();
     enable_irq();
 
