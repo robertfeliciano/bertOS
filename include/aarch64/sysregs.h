@@ -40,6 +40,7 @@
 #define SPSR_EL2h                       (9 << 0)
 #define SPSR_EL1                        (SPSR_MASK_ALL | SPSR_EL1h)
 #define SPSR_EL2                        (SPSR_MASK_ALL | SPSR_EL1h)
+#define SPSR_VALUE                      (SPSR_MASK_ALL | SPSR_EL1h)
 
 #define CurrentEL_EL1                   (1 << 2)
 #define CurrentEL_EL2                   (2 << 2)

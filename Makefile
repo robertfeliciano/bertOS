@@ -1,10 +1,9 @@
 GCC = aarch64-linux-gnu-gcc
 ARM = aarch64-linux-gnu
+INC = -Iinclude
 OPTS = -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only $(INC)
 ASMOPT = -Iinclude
 QFLAGS = qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
-
-INC = -Iinclude
 
 BUILD = build
 SRC = kernel
