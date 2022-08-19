@@ -12,4 +12,4 @@ bertOS on the pi
 todo. see the wiki for now.
 
 ### My Working Environment
-i test on qemu. currently using an ubuntu vm
+i test on qemu. currently using a Lenovo Thinkpad x1 carbon gen 9 running fedora.
