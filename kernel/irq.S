@@ -10,7 +10,7 @@ enable_irq:
     msr     daifclr, #2
     ret
 
-.global disbale_irq
+.global disable_irq
 disable_irq:
     msr     daifset, #2
     ret

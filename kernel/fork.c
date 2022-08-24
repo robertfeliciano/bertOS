@@ -34,6 +34,4 @@ int copy_process(unsigned long func, unsigned long arg){
 
 	preempt_enable();
 	return 0;
-    preempt_enable();
-    return 0;
 }
