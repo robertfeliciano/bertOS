@@ -3,7 +3,7 @@
 #include <schedule.h>
 #include <entry.h>
 
-int copy_process(unsigned long func, unsigned long arg){
+int copy_process(unsigned long func, unsigned long arg, unsigned int priority){
     preempt_disable();
     struct task_struct* p;
     p = (struct task_struct*) get_free_page();
@@ -11,7 +11,7 @@ int copy_process(unsigned long func, unsigned long arg){
     if (!p){
         return 1;
     }
-    p->priority = current->priority;
+    p->priority = priority;
     p->state = TASK_RUNNING;
     p->counter = p->priority;
     p->preempt_count = 1;
