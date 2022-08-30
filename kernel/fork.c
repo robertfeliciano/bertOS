@@ -11,9 +11,9 @@ int copy_process(unsigned long func, unsigned long arg){
     if (!p){
         return 1;
     }
-    p->priority = 1;
+    p->priority = current->priority;
     p->state = TASK_RUNNING;
-    p->counter = 1;
+    p->counter = p->priority;
     p->preempt_count = 1;
 
     p->cpu_context.x19 = func;
