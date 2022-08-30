@@ -247,4 +247,279 @@ p->counter = 1.
 
 ------------------------------
 
-task output: 123
+task output: 123aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/fork.c -o build/fork_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/irq.c -o build/irq_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/kernel.c -o build/kernel_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/miniuart.c -o build/miniuart_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/mm.c -o build/mm_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/printf.c -o build/printf_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/schedule.c -o build/schedule_c.o
+aarch64-linux-gnu-gcc -Wall -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only -Iinclude -MMD -c kernel/timer.c -o build/timer_c.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/boot.S -o build/boot_S.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/entry.S -o build/entry_S.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/irq.S -o build/irq_S.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/mm.S -o build/mm_S.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/schedule.S -o build/schedule_S.o
+aarch64-linux-gnu-gcc -Iinclude -MMD -c kernel/utils.S -o build/utils_S.o
+aarch64-linux-gnu-ld -T kernel/linker.ld -o build/kernel8.elf build/fork_c.o build/irq_c.o build/kernel_c.o build/miniuart_c.o build/mm_c.o build/printf_c.o build/schedule_c.o build/timer_c.o build/boot_S.o build/entry_S.o build/irq_S.o build/mm_S.o build/schedule_S.o build/utils_S.o
+aarch64-linux-gnu-objcopy build/kernel8.elf -O binary kernel8.img
+
+
+qemu-system-aarch64 -M raspi3 -kernel kernel8.img -serial null -serial stdio
+
+
+=============== bertOS initializing ===============
+Exception level: 1
+Timer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 1
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x00000000
+
+------------------------------
+
+task[1] counter = 0
+task[1] priority = 0
+task[1] preempt_count = 0
+task[1] sp = 0x00000000
+
+------------------------------
+
+task[2] counter = 0
+task[2] priority = 0
+task[2] preempt_count = 0
+task[2] sp = 0x00000000
+
+------------------------------
+
+task output: 
+----------- Task[1] created -----------
+
+Struct task allocated at 0x00400000.
+p->cpu_context.x19 = 0x00080a28. (fn)
+p->cpu_context.x20 = 0x00083140. (arg)
+p->cpu_context.pc  = 0x00082d3c. (ret_from_fork)
+p->cpu_context.sp  = 0x00401000. (sp)
+p->counter = 1.
+
+----------- Task[2] created -----------
+
+Struct task allocated at 0x00401000.
+p->cpu_context.x19 = 0x00080a28. (fn)
+p->cpu_context.x20 = 0x00083168. (arg)
+p->cpu_context.pc  = 0x00082d3c. (ret_from_fork)
+p->cpu_context.sp  = 0x00402000. (sp)
+p->counter = 1.
+
+Scheduling
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x00000000
+
+------------------------------
+
+task[1] counter = 1
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00401000
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00402000
+
+------------------------------
+
+task output: 12345123451Timer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 0
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00401000
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00402000
+
+------------------------------
+
+task output: abcdeabcdeabcdeaTimer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 1
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 1
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00402000
+
+------------------------------
+
+task output: 
+Scheduling
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 1
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00401e10
+
+------------------------------
+
+task output: 2345123451234512345Timer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 0
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00401e10
+
+------------------------------
+
+task output: bcdeabcdeabcdeabcdTimer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 1
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 1
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00401e10
+
+------------------------------
+
+task output: 
+Scheduling
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 1
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00401e10
+
+------------------------------
+
+task output: 123451234512345123Timer interrupt received! Generic timer.
+
+
+----------- Task switch -----------
+
+task[0] counter = 0
+task[0] priority = 1
+task[0] preempt_count = 1
+task[0] sp = 0x003fff60
+
+------------------------------
+
+task[1] counter = 0
+task[1] priority = 1
+task[1] preempt_count = 1
+task[1] sp = 0x00400e10
+
+------------------------------
+
+task[2] counter = 1
+task[2] priority = 1
+task[2] preempt_count = 1
+task[2] sp = 0x00401e10
+
+------------------------------
+
+task output: eabcdeabcd
