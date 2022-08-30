@@ -13,7 +13,7 @@ int copy_process(unsigned long func, unsigned long arg){
     }
     p->priority = 1;
     p->state = TASK_RUNNING;
-    p->counter = p->priority;
+    p->counter = 1;
     p->preempt_count = 1;
 
     p->cpu_context.x19 = func;
@@ -30,7 +30,7 @@ int copy_process(unsigned long func, unsigned long arg){
 	printf("p->cpu_context.x20 = 0x%08x. (arg)\r\n", p->cpu_context.x20);
 	printf("p->cpu_context.pc  = 0x%08x. (ret_from_fork)\r\n", p->cpu_context.pc);
 	printf("p->cpu_context.sp  = 0x%08x. (sp)\r\n", p->cpu_context.sp);
-	printf("p->counter  = %d.\r\n", p->counter);
+	printf("p->counter = %d.\r\n", p->counter);
 
 	preempt_enable();
 	return 0;

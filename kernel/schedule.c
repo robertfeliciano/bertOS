@@ -74,7 +74,7 @@ void schedule_tail(){
 }
 
 void timer_tick(){
-    --current->counter;
+    current->counter--;
     if (current->counter > 0 || current->preempt_count > 0){
         return;
     }

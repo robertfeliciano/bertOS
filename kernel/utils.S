@@ -20,15 +20,15 @@ delay:
     bne     delay
     ret
 
-.global generic_timer_init
-generic_timer_init:
+.global gen_timer_init
+gen_timer_init:
     mov     x0, #1
     msr     CNTP_CTL_EL0, x0
     ret
 
-.global generic_timer_reset
-generic_timer_reset:
+.global gen_timer_reset
+gen_timer_reset:
     mov     x0, #1
     lsl     x0, x0, #24
-    msr     CNTP_CTL_EL0, x0
+    msr     CNTP_TVAL_EL0, x0
     ret

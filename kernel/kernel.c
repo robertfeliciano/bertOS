@@ -11,8 +11,8 @@
 void process(char* arr){
     while (1){
         for (int i = 0; i < 5; i++){
-            uart_send(arr[i]);
-            delay(1000000);
+            printf("%c", arr[i]);
+            delay(10000000);
         }
     }
 }
@@ -20,9 +20,10 @@ void process(char* arr){
 void kernel_main(){
     uart_init();
     init_printf(0, putc);
+    printf("\n\n=============== bertOS initializing ===============\r\n");
     printf("Exception level: %d\r\n", get_el());
     irq_vector_init();
-    generic_timer_init();
+    gen_timer_init();
     enable_interrupt_controller();
     enable_irq();
 
@@ -32,7 +33,7 @@ void kernel_main(){
         return;
     }
     res = copy_process((unsigned long)&process, (unsigned long)"abcde");
-        if (res){
+    if (res){
         printf("error while starting process 2");
         return;
     }
@@ -40,7 +41,7 @@ void kernel_main(){
         //uart_send(uart_recv());
         /* uart_recv();
         printf("IRQ_PENDING_1: %04x\n\r", get32(IRQ_PENDING_1)); */
-        printf("\n\rSched");
+        printf("\n\rScheduling");
         schedule();
     }
 }
