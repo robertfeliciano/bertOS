@@ -27,12 +27,12 @@ void kernel_main(){
     enable_interrupt_controller();
     enable_irq();
 
-    int res = copy_process((unsigned long)&process, (unsigned long)"12345");
+    int res = copy_process((unsigned long)&process, (unsigned long)"12345 ");
     if (res){
         printf("error while starting process 1");
         return;
     }
-    res = copy_process((unsigned long)&process, (unsigned long)"abcde");
+    res = copy_process((unsigned long)&process, (unsigned long)"abcde ");
     if (res){
         printf("error while starting process 2");
         return;
