@@ -23,7 +23,7 @@ void kernel_main(){
     printf("\n\n=============== bertOS initializing ===============\r\n");
     printf("Exception level: %d\r\n", get_el());
     irq_vector_init();
-    gen_timer_init();
+    timer_init();
     enable_interrupt_controller();
     enable_irq();
 
